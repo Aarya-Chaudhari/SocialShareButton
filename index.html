@@ -61,6 +61,8 @@
 
     .demo-section {
       background: rgba(255, 255, 255, 0.1);
+      /* Safari 9+ and Safari iOS 9+ support */
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       border-radius: 16px;
       padding: 30px;
@@ -371,7 +373,7 @@
         </div>
         <div class="demo-item">
           <h3>Social Media</h3>
-          <p>Facebook, X, Instagram</p>
+          <p>Facebook, X, reddit</p>
           <div id="demo-social"></div>
         </div>
         <div class="demo-item">
@@ -408,7 +410,7 @@ new SocialShareButton({
       <p>First-class React support with hooks</p>
       
       <div class="code-block">
-<code>import { SocialShareButton } from 'social-share-button/react';
+<code>import SocialShareButton from 'social-share-button';
 
 function App() {
   return (
@@ -427,7 +429,7 @@ function App() {
     <!-- CTA Section -->
     <div class="cta-section">
       <h2 style="color: #fff; margin-bottom: 20px;">Ready to Get Started?</h2>
-      <a href="https://github.com/AOSSIE-Org/SocialShareButton" class="cta-button" target="_blank">
+      <a href="https://github.com/AOSSIE-Org/SocialShareButton" class="cta-button" target="_blank" rel="noopener">
         View on GitHub →
       </a>
     </div>
@@ -436,8 +438,8 @@ function App() {
       <p>Made with ❤️ by the AOSSIE community</p>
       <p style="margin-top: 10px; opacity: 0.7;">
         GPL v3 Licensed | 
-        <a href="https://github.com/AOSSIE-Org/SocialShareButton" style="color: #fff;">GitHub</a> | 
-        <a href="https://github.com/AOSSIE-Org/SocialShareButton/issues" style="color: #fff;">Issues</a>
+        <a href="https://github.com/AOSSIE-Org/SocialShareButton" style="color: #fff;" rel="noopener">GitHub</a> | 
+        <a href="https://github.com/AOSSIE-Org/SocialShareButton/issues" style="color: #fff;" rel="noopener">Issues</a>
       </p>
     </footer>
   </div>
@@ -586,6 +588,7 @@ function App() {
       buttonColor: '#ec4899',
       buttonHoverColor: '#db2777',
       buttonText: 'Share'
+    });
     });
   </script>
 </body>

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SocialShareButton - A lightweight, customizable social sharing component
  * @version 1.0.3
  * @license GPL-3.0
@@ -7,8 +7,8 @@
 class SocialShareButton {
   constructor(options = {}) {
     this.options = {
-      url: options.url || window.location.href,
-      title: options.title || document.title,
+      url: options.url || (typeof window !== 'undefined' ? window.location.href : ''),
+      title: options.title || (typeof document !== 'undefined' ? document.title : ''),
       description: options.description || '',
       hashtags: options.hashtags || [],
       via: options.via || '',
@@ -278,7 +278,37 @@ class SocialShareButton {
     const input = this.modal.querySelector('.social-share-link-input input');
     const copyBtn = this.modal.querySelector('.social-share-copy-btn');
     
-    navigator.clipboard.writeText(this.options.url).then(() => {
+    // Check if clipboard API is available
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(this.options.url).then(() => {
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        
+        if (this.options.onCopy) {
+          this.options.onCopy(this.options.url);
+        }
+        
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      }).catch((err) => {
+        console.error('Failed to copy:', err);
+        // Fallback to manual selection
+        this.fallbackCopy(input, copyBtn);
+      });
+    } else {
+      // Fallback for browsers without clipboard API
+      this.fallbackCopy(input, copyBtn);
+    }
+  }
+
+  fallbackCopy(input, copyBtn) {
+    try {
+      input.select();
+      input.setSelectionRange(0, 99999); // For mobile devices
+      document.execCommand('copy');
+      
       copyBtn.textContent = 'Copied!';
       copyBtn.classList.add('copied');
       
@@ -290,7 +320,13 @@ class SocialShareButton {
         copyBtn.textContent = 'Copy';
         copyBtn.classList.remove('copied');
       }, 2000);
-    });
+    } catch (err) {
+      console.error('Fallback copy failed:', err);
+      copyBtn.textContent = 'Failed';
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+      }, 2000);
+    }
   }
 
   destroy() {
