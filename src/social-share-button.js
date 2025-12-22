@@ -54,21 +54,19 @@ class SocialShareButton {
       </svg>
       <span>${this.options.buttonText}</span>
     `;
-    // Keyboard accessibility: allow Enter and Space to trigger the button
-    // Keyboard accessibility: allow Enter and Space to trigger the button
-button.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    button.click();
-  }
-});
+    button.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      button.click();
+    }
+    });
 
-button.addEventListener('keyup', (event) => {
-  if (event.key === ' ') {
-    event.preventDefault();
-    button.click();
-  }
-});
+    button.addEventListener('keyup', (event) => {
+      if (event.key === ' ') {
+      event.preventDefault();
+      button.click();
+    }
+    });
 
 
     this.button = button;
