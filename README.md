@@ -4,7 +4,7 @@
 <!-- Organization Logo -->
 <div align="center" style="display: flex; align-items: center; justify-content: center; gap: 16px;">
   <img alt="Stability Nexus" src="public/aossie_logo.svg" width="175">
-  <img src="public/todo-project-logo.svg" width="175" />
+  <!-- <img src="public/todo-project-logo.svg" width="175" /> -->
 </div>
 
 &nbsp;
@@ -12,7 +12,7 @@
 <!-- Organization Name -->
 <div align="center">
 
-[![Static Badge](https://img.shields.io/badge/AOSSIE-/TODO-228B22?style=for-the-badge&labelColor=FFC517)](https://TODO.aossie/)
+[![Static Badge](https://img.shields.io/badge/AOSSIE-Social_Share_Button-228B22?style=for-the-badge&labelColor=FFC517)](https://TODO.aossie/)
 
 <!-- Correct deployed url to be added -->
 
@@ -51,11 +51,7 @@
 <h1>SocialShareButton</h1>
 </div>
 
-[TODO](https://TODO.stability.nexus/) Lightweight social sharing component for web applications. Zero dependencies, framework-agnostic.
-
-
-
-
+Lightweight social sharing component for web applications. Zero dependencies, framework-agnostic.
 
 
 [![npm version](https://img.shields.io/npm/v/social-share-button-aossie.svg)](https://www.npmjs.com/package/social-share-button-aossie)
