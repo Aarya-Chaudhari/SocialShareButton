@@ -14,12 +14,12 @@ This document provides guidelines to help you contribute effectively and keep th
 
 ## 📋 Table of Contents
 
-- Ways to Contribute
-- Getting Started
-- Development Workflow
-- Pull Request Guidelines
-- Code Style
-- Community Guidelines
+-  [Ways to Contribute](`#-ways-to-contribute`)
+- [Getting Started](`#-getting-started`)
+- [Pull Request Guidelines](`#-pull-request-guidelines`)
+- [Community Guidelines](`#-community-guidelines`)
+- [Getting Help](`#-getting-help`)
+- [Issue Assignment](`#-issue-assignment`)
 
 ## 📌 Ways to Contribute
 
@@ -50,7 +50,9 @@ Then clone your fork locally:
 ```bash
 git clone https://github.com/YOUR_USERNAME/SocialShareButton.git
 ```
+
 - Add upstream remote:
+  
 ```bash
 git remote add upstream https://github.com/AOSSIE-Org/SocialShareButton.git
 ```
@@ -58,12 +60,12 @@ git remote add upstream https://github.com/AOSSIE-Org/SocialShareButton.git
 
 Always create a new branch for your changes:
 
-```bash 
+```bash
 git checkout -b feature/your-feature-name
 ```
 **Examples:**
 
-_ `feature/add-linkedin-support`
+- `feature/add-linkedin-support`
 - `fix/button-alignment-issue`
 - `docs/update-readme`
 
