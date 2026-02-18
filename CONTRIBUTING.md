@@ -46,38 +46,38 @@ git clone https://github.com/YOUR_USERNAME/SocialShareButton.git
 
 ### 3️⃣ Follow Project Standards
 
-+- Keep the project lightweight and dependency-free.
+- Keep the project lightweight and dependency-free.
 
-+- Follow the existing code style.
+- Follow the existing code style.
 
-+- Avoid unnecessary libraries.
+- Avoid unnecessary libraries.
 
-+- Write clean, readable, and modular code.
+- Write clean, readable, and modular code.
 
-+- Do not break existing functionality.
+- Do not break existing functionality.
 
 ### 4️⃣ Test Your Changes
 
-+- Before submitting a Pull Request:
+- Before submitting a Pull Request:
 
-+- Open index.html in your browser.
+- Open index.html in your browser.
 
-+- Test all social share buttons.
+- Test all social share buttons.
 
-+- Ensure no console errors appear.
+- Ensure no console errors appear.
 
-+- Check responsiveness on different screen sizes.
+- Check responsiveness on different screen sizes.
 
 ### 5️⃣ Commit Your Changes
 
-+- Use clear and meaningful commit messages.
+- Use clear and meaningful commit messages.
 
-+**Format:**
+**Format:**
 
 ###### type: short description
 
 
-##### Examples:
+**Examples:**
 
 feat: add Twitter share support
 fix: resolve mobile button spacing issue
@@ -90,31 +90,31 @@ Push your branch:
 ###### git push origin feature/your-feature-name
 
 
-Then open a Pull Request including:
+- Then open a Pull Request including:
 
-What changes were made
+- What changes were made
 
-Why the change is needed
+- Why the change is needed
 
-Screenshots (if UI changes)
+- Screenshots (if UI changes)
 
-Any relevant issue reference
+- Any relevant issue reference
 
 #### 📋 Pull Request Guidelines
 
-Keep PRs small and focused.
+- Keep PRs small and focused.
 
-One feature or fix per PR.
+- One feature or fix per PR.
 
-Avoid large unrelated changes.
+- Avoid large unrelated changes.
 
-Ensure documentation is updated if needed.
+- Ensure documentation is updated if needed.
 
-Be responsive to review feedback.
+- Be responsive to review feedback.
 
 #### 🤝 Code of Conduct
 
-+- Please be respectful and constructive in all communications.
-+- We aim to maintain a welcoming and collaborative environment.
+- Please be respectful and constructive in all communications.
+- We aim to maintain a welcoming and collaborative environment.
 
 ### Thank you for helping improve SocialShareButton! 🎉
