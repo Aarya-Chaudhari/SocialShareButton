@@ -33,44 +33,46 @@ git clone https://github.com/YOUR_USERNAME/SocialShareButton.git
 ```
 ### 2️⃣ Create a New Branch
 
-#### Always create a new branch for your changes:
++Always create a new branch for your changes:
 
-#### git checkout -b feature/your-feature-name
-##### Examples:
++```bash 
++git checkout -b feature/your-feature-name
++```
++**Examples:**
 
-##### feature/add-linkedin-support
-##### fix/button-alignment-issue
-##### docs/update-readme
++_ `feature/add-linkedin-support`
++- `fix/button-alignment-issue`
++- `docs/update-readme`
 
 ### 3️⃣ Follow Project Standards
 
-###### Keep the project lightweight and dependency-free.
++- Keep the project lightweight and dependency-free.
 
-###### Follow the existing code style.
++- Follow the existing code style.
 
-###### Avoid unnecessary libraries.
++- Avoid unnecessary libraries.
 
-###### Write clean, readable, and modular code.
++- Write clean, readable, and modular code.
 
-###### Do not break existing functionality.
++- Do not break existing functionality.
 
 ### 4️⃣ Test Your Changes
 
-##### Before submitting a Pull Request:
++- Before submitting a Pull Request:
 
-##### Open index.html in your browser.
++- Open index.html in your browser.
 
-##### Test all social share buttons.
++- Test all social share buttons.
 
-##### Ensure no console errors appear.
++- Ensure no console errors appear.
 
-##### Check responsiveness on different screen sizes.
++- Check responsiveness on different screen sizes.
 
 ### 5️⃣ Commit Your Changes
 
-##### Use clear and meaningful commit messages.
++- Use clear and meaningful commit messages.
 
-#### Format:
++**Format:**
 
 ###### type: short description
 
@@ -112,7 +114,7 @@ Be responsive to review feedback.
 
 #### 🤝 Code of Conduct
 
-#### Please be respectful and constructive in all communications.
-#### We aim to maintain a welcoming and collaborative environment.
++- Please be respectful and constructive in all communications.
++- We aim to maintain a welcoming and collaborative environment.
 
 ### Thank you for helping improve SocialShareButton! 🎉
