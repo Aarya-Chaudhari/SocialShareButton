@@ -1,20 +1,23 @@
 # Security Policy
 
+This policy applies only to the SocialShareButton repository.
+
 ## Supported Versions
 
-Currently, the latest version available on the `main` branch is actively maintained.  
-Security updates will be applied to the latest stable version.
+The latest version available on the `main` branch is actively maintained and supported with security updates.  
+Older versions may not receive security patches.
 
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability, please **do not open a public GitHub issue**.
 
 Instead, report it privately using GitHub’s built-in private vulnerability reporting feature:
+
 https://github.com/AOSSIE-Org/SocialShareButton/security/advisories/new
 
-This ensures the issue can be addressed responsibly and without exposing users to risk.
+Private reporting ensures the issue can be addressed responsibly without exposing users to unnecessary risk.
 
-You may also contact the maintainers directly if necessary.
+If private reporting is unavailable, please contact the repository maintainers through the organization’s official communication channels.
 
 ## What to Include in Your Report
 
@@ -22,18 +25,22 @@ To help us investigate efficiently, please include:
 
 - A clear description of the vulnerability
 - Steps to reproduce the issue
-- The potential impact
-- Any proof-of-concept or screenshots (if applicable)
+- The potential impact and affected components
+- Any proof-of-concept code, logs, or screenshots (if applicable)
 - Suggested mitigation or fix (if known)
 
-## Response Process
+Providing detailed information helps us respond more quickly and effectively.
+
+## Response and Disclosure Process
 
 Once a vulnerability report is received:
 
-1. The maintainers will acknowledge the report.
-2. The issue will be investigated.
-3. A fix will be developed and tested.
-4. A security update will be released if necessary.
-5. Proper credit will be given for responsible disclosure (if desired).
+1. The maintainers will acknowledge receipt of the report within 48 hours.
+2. The issue will be investigated and validated.
+3. If confirmed, a fix will be developed and tested.
+4. We will coordinate responsible disclosure with the reporter.
+5. A security update or patch will be released as soon as possible.
 
-Thank you for helping keep SocialShareButton secure and reliable.
+We kindly ask reporters to avoid public disclosure until a fix has been released, allowing us to protect users effectively.
+
+We appreciate responsible disclosure and thank you for helping keep SocialShareButton secure and reliable.
