@@ -21,8 +21,6 @@ https://github.com/AOSSIE-Org/SocialShareButton/security/advisories/new
 
 Private reporting ensures the issue can be addressed responsibly without exposing users to unnecessary risk.
 
-+**Note:** If the link above does not work, private vulnerability reporting may not yet be enabled for this repository. A repository administrator can enable it by following the [GitHub Docs guide for configuring private vulnerability reporting for a repository](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/configuring-private-vulnerability-reporting-for-a-repository).
-
 ## What to Include in Your Report
 
 To help us investigate efficiently, please include:
@@ -39,7 +37,11 @@ Providing detailed information helps us respond more quickly and effectively.
 
 Once a vulnerability report is received:
 
-We will acknowledge receipt of the report, investigate and validate the issue, and work on a fix if the vulnerability is confirmed. We will coordinate responsible disclosure with the reporter before any public announcement.
+1. **Acknowledge** receipt of the report within **48 hours**.
+2. **Investigate and validate** the reported issue.
+3. **Develop and test** a fix if the vulnerability is confirmed.
+4. **Coordinate** responsible disclosure with the reporter before any public announcement.
+5. **Release** a prompt patch and notify the reporter.
 
 We kindly ask reporters to avoid public disclosure until a fix has been released, allowing us to protect users effectively.
 
