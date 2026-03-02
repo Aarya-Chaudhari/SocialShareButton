@@ -32,7 +32,16 @@ class SocialShareButton {
     this.customColorMouseEnterHandler = null;
     this.customColorMouseLeaveHandler = null;
 this.ownsButton = false;
+// Store bound handlers for proper cleanup (fix memory leak)
+this.handleButtonClick = null;
+this.handleOverlayClick = null;
+this.handleCloseClick = null;
+this.handleCopyClick = null;
+this.handleInputClick = null;
+this.handleKeydown = null;
+this.platformBtnHandlers = [];
 this.isCopying = false; // ADD THIS LINE (important)
+this.eventsAttached = false; // Prevent duplicate listener attachment
 
     if (this.options.container) {
       this.init();
@@ -218,46 +227,57 @@ this.isCopying = false; // ADD THIS LINE (important)
     return urls[platform] || '';
   }
 
-  attachEvents() {
-    if (this.button) {
-      this.button.addEventListener('click', () => this.openModal());
-    }
-
-    // Modal overlay click to close
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
-        this.closeModal();
-      }
-    });
-
-    // Close button
-    const closeBtn = this.modal.querySelector('.social-share-modal-close');
-    closeBtn.addEventListener('click', () => this.closeModal());
-
-    // Platform buttons
-    const platformBtns = this.modal.querySelectorAll('.social-share-platform-btn');
-    platformBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const platform = btn.dataset.platform;
-        this.share(platform);
-      });
-    });
-
-    // Copy button
-    const copyBtn = this.modal.querySelector('.social-share-copy-btn');
-    copyBtn.addEventListener('click', () => this.copyLink());
-
-    // Input click to select
-    const input = this.modal.querySelector('.social-share-link-input input');
-    input.addEventListener('click', (e) => e.target.select());
-
-    // ESC key to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isModalOpen) {
-        this.closeModal();
-      }
-    });
+attachEvents() {
+  if (this.eventsAttached) return; // Prevent duplicate listeners
+  this.eventsAttached = true;
+  if (this.button) {
+    this.handleButtonClick = () => this.openModal();
+    this.button.addEventListener('click', this.handleButtonClick);
   }
+
+  // Modal overlay click to close
+  this.handleOverlayClick = (e) => {
+    if (e.target === this.modal) {
+      this.closeModal();
+    }
+  };
+  this.modal.addEventListener('click', this.handleOverlayClick);
+
+  // Close button
+  const closeBtn = this.modal.querySelector('.social-share-modal-close');
+  this.handleCloseClick = () => this.closeModal();
+  closeBtn.addEventListener('click', this.handleCloseClick);
+
+  // Platform buttons
+  const platformBtns = this.modal.querySelectorAll('.social-share-platform-btn');
+  this.platformBtnHandlers = [];
+  platformBtns.forEach(btn => {
+    const handler = () => {
+      const platform = btn.dataset.platform;
+      this.share(platform);
+    };
+    btn.addEventListener('click', handler);
+    this.platformBtnHandlers.push({ btn, handler });
+  });
+
+  // Copy button
+  const copyBtn = this.modal.querySelector('.social-share-copy-btn');
+  this.handleCopyClick = () => this.copyLink();
+  copyBtn.addEventListener('click', this.handleCopyClick);
+
+  // Input click to select
+  const input = this.modal.querySelector('.social-share-link-input input');
+  this.handleInputClick = (e) => e.target.select();
+  input.addEventListener('click', this.handleInputClick);
+
+  // ESC key to close (GLOBAL listener — major leak if not removed)
+  this.handleKeydown = (e) => {
+    if (e.key === 'Escape' && this.isModalOpen) {
+      this.closeModal();
+    }
+  };
+  document.addEventListener('keydown', this.handleKeydown);
+}
 
   openModal() {
     this.isModalOpen = true;
@@ -353,28 +373,81 @@ fallbackCopy(input) {
   }
 }
 
-  destroy() {
-    if (this.button && this.customColorMouseEnterHandler) {
-      this.button.removeEventListener('mouseenter', this.customColorMouseEnterHandler);
-      this.customColorMouseEnterHandler = null;
-    }
-    if (this.button && this.customColorMouseLeaveHandler) {
-  this.button.removeEventListener('mouseleave', this.customColorMouseLeaveHandler);
-  this.customColorMouseLeaveHandler = null;
-}
-
-// Reset copying state cleanly
-this.isCopying = false;
-
-    // Only remove if this instance created the button
-if (this.ownsButton && this.button && this.button.parentNode) {
-  this.button.parentNode.removeChild(this.button);
-}
-    if (this.modal && this.modal.parentNode) {
-      this.modal.parentNode.removeChild(this.modal);
-    }
-    document.body.style.overflow = '';
+destroy() {
+  // Remove button click listener
+  if (this.button && this.handleButtonClick) {
+    this.button.removeEventListener('click', this.handleButtonClick);
+    this.handleButtonClick = null;
   }
+
+  // Remove modal overlay listener
+  if (this.modal && this.handleOverlayClick) {
+    this.modal.removeEventListener('click', this.handleOverlayClick);
+    this.handleOverlayClick = null;
+  }
+
+  // Remove close button listener
+  const closeBtn = this.modal?.querySelector('.social-share-modal-close');
+  if (closeBtn && this.handleCloseClick) {
+    closeBtn.removeEventListener('click', this.handleCloseClick);
+    this.handleCloseClick = null;
+  }
+
+  // Remove platform button listeners
+  if (this.platformBtnHandlers.length) {
+    this.platformBtnHandlers.forEach(({ btn, handler }) => {
+      btn.removeEventListener('click', handler);
+    });
+    this.platformBtnHandlers = [];
+  }
+
+  // Remove copy button listener
+  const copyBtn = this.modal?.querySelector('.social-share-copy-btn');
+  if (copyBtn && this.handleCopyClick) {
+    copyBtn.removeEventListener('click', this.handleCopyClick);
+    this.handleCopyClick = null;
+  }
+
+  // Remove input listener
+  const input = this.modal?.querySelector('.social-share-link-input input');
+  if (input && this.handleInputClick) {
+    input.removeEventListener('click', this.handleInputClick);
+    this.handleInputClick = null;
+  }
+
+  // 🚨 MOST IMPORTANT: Remove global keydown listener (Coderabbit's main complaint)
+  if (this.handleKeydown) {
+    document.removeEventListener('keydown', this.handleKeydown);
+    this.handleKeydown = null;
+  }
+
+  // Remove hover color handlers
+  if (this.button && this.customColorMouseEnterHandler) {
+    this.button.removeEventListener('mouseenter', this.customColorMouseEnterHandler);
+    this.customColorMouseEnterHandler = null;
+  }
+
+  if (this.button && this.customColorMouseLeaveHandler) {
+    this.button.removeEventListener('mouseleave', this.customColorMouseLeaveHandler);
+    this.customColorMouseLeaveHandler = null;
+  }
+
+  // Reset state
+  this.isCopying = false;
+
+  // Only remove button if owned
+  if (this.ownsButton && this.button && this.button.parentNode) {
+    this.button.parentNode.removeChild(this.button);
+  }
+
+  // Remove modal
+  if (this.modal && this.modal.parentNode) {
+    this.modal.parentNode.removeChild(this.modal);
+  }
+
+  document.body.style.overflow = '';
+  this.eventsAttached = false; // Allow safe re-initialization
+}
 
   updateOptions(options) {
     this.options = { ...this.options, ...options };
