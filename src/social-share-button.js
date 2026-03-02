@@ -63,10 +63,18 @@ class SocialShareButton {
         : this.options.container;
       
     if (container) {
-      if (!container.querySelector('.social-share-btn')) {
-      container.appendChild(button);
-      }
-    }
+  // Check if button already exists in DOM
+  const existingBtn = container.querySelector('.social-share-btn');
+
+  if (existingBtn) {
+    // Use the existing DOM button instead of the new detached one
+    this.button = existingBtn;
+  } else {
+    // Append and then assign the actual DOM button
+    container.appendChild(button);
+    this.button = button;
+  }
+}
     }
   }
 
