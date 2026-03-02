@@ -92,10 +92,10 @@ class SocialShareButton {
           ${this.getPlatformsHTML()}
         </div>
         <div class="social-share-link-container">
-          <div class="social-share-link-input">
-          </div>
-          <button class="social-share-copy-btn">Copy</button>
-        </div>
+  <div class="social-share-link-input"></div>
+  <button class="social-share-copy-btn" aria-label="Copy link to clipboard">Copy</button>
+  <span class="social-share-copy-status" aria-live="polite" style="position:absolute;left:-9999px;"></span>
+</div>
       </div>
     `;
 
@@ -292,60 +292,62 @@ class SocialShareButton {
     }
   }
 
-  copyLink() {
-    const input = this.modal.querySelector('.social-share-link-input input');
-    const copyBtn = this.modal.querySelector('.social-share-copy-btn');
-    
-    // Check if clipboard API is available
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(this.options.url).then(() => {
-        copyBtn.textContent = 'Copied!';
-        copyBtn.classList.add('copied');
-        
-        if (this.options.onCopy) {
-          this.options.onCopy(this.options.url);
-        }
-        
-        setTimeout(() => {
-          copyBtn.textContent = 'Copy';
-          copyBtn.classList.remove('copied');
-        }, 2000);
-      }).catch((err) => {
-        console.error('Failed to copy:', err);
-        // Fallback to manual selection
-        this.fallbackCopy(input, copyBtn);
-      });
-    } else {
-      // Fallback for browsers without clipboard API
-      this.fallbackCopy(input, copyBtn);
-    }
-  }
+copyLink() {
+  if (this.isCopying) return; // Prevent rapid-click race condition
+  this.isCopying = true;
 
-  fallbackCopy(input, copyBtn) {
-    try {
-      input.select();
-      input.setSelectionRange(0, 99999); // For mobile devices
-      document.execCommand('copy');
-      
+  const input = this.modal.querySelector('.social-share-link-input input');
+  const copyBtn = this.modal.querySelector('.social-share-copy-btn');
+  const status = this.modal.querySelector('.social-share-copy-status');
+
+  const showResult = (success) => {
+    if (success) {
       copyBtn.textContent = 'Copied!';
       copyBtn.classList.add('copied');
+      if (status) status.textContent = 'Link copied to clipboard';
       
       if (this.options.onCopy) {
         this.options.onCopy(this.options.url);
       }
-      
-      setTimeout(() => {
-        copyBtn.textContent = 'Copy';
-        copyBtn.classList.remove('copied');
-      }, 2000);
-    } catch (err) {
-      console.error('Fallback copy failed:', err);
+    } else {
       copyBtn.textContent = 'Failed';
-      setTimeout(() => {
-        copyBtn.textContent = 'Copy';
-      }, 2000);
+      if (status) status.textContent = 'Copy failed';
     }
+
+    setTimeout(() => {
+      copyBtn.textContent = 'Copy';
+      copyBtn.classList.remove('copied');
+      if (status) status.textContent = '';
+      this.isCopying = false; // Unlock after animation
+    }, 2000);
+  };
+
+  // Proper secure context + clipboard check
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(this.options.url)
+      .then(() => showResult(true))
+      .catch(() => {
+        const fallbackSuccess = this.fallbackCopy(input, copyBtn, true);
+        showResult(fallbackSuccess);
+      });
+  } else {
+    // Fallback for file:// or insecure context
+    const fallbackSuccess = this.fallbackCopy(input, copyBtn, true);
+    showResult(fallbackSuccess);
   }
+}
+
+fallbackCopy(input) {
+  try {
+    input.select();
+    input.setSelectionRange(0, 99999); // Mobile support
+    const successful = document.execCommand('copy');
+    return successful;
+  } catch (err) {
+    console.error('Fallback copy failed:', err);
+    return false;
+  }
+}
 
   destroy() {
     if (this.button && this.customColorMouseEnterHandler) {
@@ -355,6 +357,7 @@ class SocialShareButton {
     if (this.button && this.customColorMouseLeaveHandler) {
       this.button.removeEventListener('mouseleave', this.customColorMouseLeaveHandler);
       this.customColorMouseLeaveHandler = null;
+      this.isCopying = false;
     }
 
     if (this.button && this.button.parentNode) {
