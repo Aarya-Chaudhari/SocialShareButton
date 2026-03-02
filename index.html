@@ -575,8 +575,8 @@ const copyButtons = document.querySelectorAll('.copy-btn');
 
 copyButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    const codeBlock = button.nextElementSibling;
-    const text = codeBlock.innerText;
+    const codeBlock = button.closest('.code-container')?.querySelector('code');
+const text = codeBlock ? codeBlock.innerText : '';
 
     navigator.clipboard.writeText(text).then(() => {
       const originalText = button.textContent;

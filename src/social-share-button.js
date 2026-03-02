@@ -31,6 +31,8 @@ class SocialShareButton {
     this.button = null;
     this.customColorMouseEnterHandler = null;
     this.customColorMouseLeaveHandler = null;
+this.ownsButton = false;
+this.isCopying = false; // ADD THIS LINE (important)
 
     if (this.options.container) {
       this.init();
@@ -67,13 +69,15 @@ class SocialShareButton {
   const existingBtn = container.querySelector('.social-share-btn');
 
   if (existingBtn) {
-    // Use the existing DOM button instead of the new detached one
-    this.button = existingBtn;
-  } else {
-    // Append and then assign the actual DOM button
-    container.appendChild(button);
-    this.button = button;
-  }
+  // Reuse existing button but DO NOT own it
+  this.button = existingBtn;
+  this.ownsButton = false;
+} else {
+  // Create and own the new button
+  container.appendChild(button);
+  this.button = button;
+  this.ownsButton = true;
+}
 }
     }
   }
@@ -327,12 +331,12 @@ copyLink() {
     navigator.clipboard.writeText(this.options.url)
       .then(() => showResult(true))
       .catch(() => {
-        const fallbackSuccess = this.fallbackCopy(input, copyBtn, true);
+        const fallbackSuccess = this.fallbackCopy(input);
         showResult(fallbackSuccess);
       });
   } else {
     // Fallback for file:// or insecure context
-    const fallbackSuccess = this.fallbackCopy(input, copyBtn, true);
+    const fallbackSuccess = this.fallbackCopy(input);
     showResult(fallbackSuccess);
   }
 }
@@ -355,14 +359,17 @@ fallbackCopy(input) {
       this.customColorMouseEnterHandler = null;
     }
     if (this.button && this.customColorMouseLeaveHandler) {
-      this.button.removeEventListener('mouseleave', this.customColorMouseLeaveHandler);
-      this.customColorMouseLeaveHandler = null;
-      this.isCopying = false;
-    }
+  this.button.removeEventListener('mouseleave', this.customColorMouseLeaveHandler);
+  this.customColorMouseLeaveHandler = null;
+}
 
-    if (this.button && this.button.parentNode) {
-      this.button.parentNode.removeChild(this.button);
-    }
+// Reset copying state cleanly
+this.isCopying = false;
+
+    // Only remove if this instance created the button
+if (this.ownsButton && this.button && this.button.parentNode) {
+  this.button.parentNode.removeChild(this.button);
+}
     if (this.modal && this.modal.parentNode) {
       this.modal.parentNode.removeChild(this.modal);
     }
