@@ -485,9 +485,9 @@ destroy() {
     input.removeEventListener('click', this.handleInputClick);
   }
 
-  if (this.handleKeydown) {
-    document.removeEventListener('keydown', this.handleKeydown);
-  }
+  if (this.isBrowser && this.handleKeydown) {
+  document.removeEventListener('keydown', this.handleKeydown);
+}
 
   if (this.button && this.customColorMouseEnterHandler) {
     this.button.removeEventListener('mouseenter', this.customColorMouseEnterHandler);
@@ -554,7 +554,9 @@ destroy() {
     this.modal.parentNode.removeChild(this.modal);
   }
 
+  if (this.isBrowser && document.body) {
   document.body.style.overflow = '';
+}
   this.eventsAttached = false;
   this.isCopying = false;
 }
