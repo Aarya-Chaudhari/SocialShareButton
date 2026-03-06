@@ -91,14 +91,20 @@ this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined
       if (container) {
   const existingButton = container.querySelector('.social-share-btn');
 
-  if (existingButton) {
-    this.button = existingButton;
-    this.ownsButton = false;
-  } else {
-    container.appendChild(button);
-    this.button = button;
-    this.ownsButton = true;
+if (existingButton) {
+  this.button = existingButton;
+  this.ownsButton = false;
+
+  // Prevent duplicate initialization when reusing existing button
+  if (this.eventsAttached) {
+    return;
   }
+
+} else {
+  container.appendChild(button);
+  this.button = button;
+  this.ownsButton = true;
+}
 }
     }
   }
@@ -288,55 +294,25 @@ this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined
       this.closeModal();
     }
   };
+  if (this.isBrowser) {
   document.addEventListener('keydown', this.handleKeydown);
 }
-    if (this.button) {
-      this.button.addEventListener("click", () => this.openModal());
-    }
-
-    // Modal overlay click to close
-    this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) {
-        this.closeModal();
-      }
-    });
-
-    // Close button
-    const closeBtn = this.modal.querySelector(".social-share-modal-close");
-    closeBtn.addEventListener("click", () => this.closeModal());
-
-    // Platform buttons
-    const platformBtns = this.modal.querySelectorAll(
-      ".social-share-platform-btn",
-    );
-    platformBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const platform = btn.dataset.platform;
-        this.share(platform);
-      });
-    });
-
-    // Copy button
-    const copyBtn = this.modal.querySelector(".social-share-copy-btn");
-    copyBtn.addEventListener("click", () => this.copyLink());
-
-    // Input click to select
-    const input = this.modal.querySelector(".social-share-link-input input");
-    input.addEventListener("click", (e) => e.target.select());
-
-    // ESC key to close
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.isModalOpen) {
-        this.closeModal();
-      }
-    });
-  }
+<<<<<<< Updated upstream
+=======
+}
+>>>>>>> Stashed changes
 
   openModal() {
     this.isModalOpen = true;
-    this.modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
-
+    this.modal.style.display = 'flex';
+<<<<<<< Updated upstream
+    document.body.style.overflow = 'hidden';
+=======
+    if (this.isBrowser && document.body) {
+  document.body.style.overflow = 'hidden';
+}
+>>>>>>> Stashed changes
+    
     // Animate in
     setTimeout(() => {
       this.modal.classList.add("active");
